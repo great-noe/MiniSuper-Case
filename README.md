@@ -3,6 +3,42 @@
 
 ---
 
+## 📊 Estado del Proyecto - Actualización 3 mayo 2026
+
+| Componente | Status | Progreso |
+|-----------|--------|----------|
+| **SQL Schema** | ✅ COMPLETO | 100% |
+| **Backend Estructura** | ✅ COMPLETO | 100% |
+| **Configuración (requirements.txt, .env)** | ✅ COMPLETO | 100% |
+| **Backend API** | ⏳ En progreso | 0% |
+| **Poblado de Datos** | ⏳ Programado | 0% |
+| **Frontend** | ⏳ A negociar | 0% |
+| **Deployment** | ⏳ Programado | 0% |
+| **TOTAL PROYECTO** | 📈 **25% Avance** | **1 de 4 días** |
+
+### ✨ Cambios Realizados Hoy
+
+- ✅ **backend/sql/schema.sql** (8.6 KB)
+  - 7 tablas principales (usuarios, roles, clientes, categorías, productos, ventas, detalle_ventas)
+  - Integridad referencial completa (foreign keys)
+  - 10 índices para optimización de búsquedas
+  - 3 vistas analíticas (ventas detalladas, stock crítico, desempeño)
+  - 2 triggers automáticos (actualización de stock y totales de cliente)
+  - Constraints de validación de datos
+
+- ✅ **Arquitectura Limpia Implementada**
+  - `backend/app/domain/` → Modelos de dominio (entidades)
+  - `backend/app/application/` → Lógica de casos de uso (servicios)
+  - `backend/app/infrastructure/` → Implementación técnica (BD, config)
+  - `backend/app/presentation/` → API REST (rutas, middleware)
+
+- ✅ **Configuración Backend**
+  - `requirements.txt` con 9 dependencias: Flask, SQLAlchemy, JWT, bcrypt, marshmallow
+  - `.env.example` con variables de entorno
+  - `backend/README.md` con guía de instalación paso a paso
+
+---
+
 ## Índice
 1. Introducción
 2. Objetivo del proyecto
@@ -12,9 +48,11 @@
 6. Requerimientos del sistema
 7. Reglas de negocio
 8. Propuesta de modelo de datos
-9. Referencias
-10. Conclusión
-11. Anexos
+9. Cronograma de Implementación (NUEVO)
+10. Arquitectura Técnica (NUEVO)
+11. Referencias
+12. Conclusión
+13. Anexos
 
 ---
 
@@ -134,6 +172,239 @@ La estructura propuesta separa catálogos, transacciones y detalle transaccional
 
 ---
 
+## 9. Cronograma de Implementación
+
+### 🟢 FASE 1 - HOY (3 mayo) ✅ COMPLETA
+**Backend SQL + Estructura**
+
+- ✅ Diseño schema.sql con 7 tablas
+- ✅ Estructura carpetas (Arquitectura Limpia)
+- ✅ Dependencias Python (requirements.txt)
+- ✅ Configuración inicial (.env.example)
+- ✅ Documentación backend
+
+**Entregable:** `backend/` con SQL completo, estructura lista para desarrollo
+
+---
+
+### 🟡 FASE 2 - MAÑANA (4 mayo)
+**Poblado de Datos + Validación**
+
+- [ ] Instalar PostgreSQL local
+- [ ] Crear BD: `createdb minisuper_db`
+- [ ] Ejecutar schema.sql
+- [ ] Crear `seeds.sql` con datos iniciales:
+  - [ ] 3-5 usuarios (admin, vendedor, gerente)
+  - [ ] 10 categorías de productos
+  - [ ] 30 productos de ejemplo
+  - [ ] 5-10 clientes de prueba
+- [ ] Validar integridad con consultas
+- [ ] Ejecutar triggers y verificar automatismos
+
+**Entregable:** BD poblada, validada, lista para API
+
+---
+
+### 🟡 FASE 3 - MIÉRCOLES (5 mayo)
+**Backend API + Endpoints CRUD**
+
+- [ ] Crear `main.py` (entrada Flask)
+- [ ] Configurar SQLAlchemy + conexión BD
+- [ ] Implementar autenticación JWT
+- [ ] Endpoints CRUD:
+  - [ ] `POST /api/auth/login` - Iniciar sesión
+  - [ ] `GET/POST /api/productos` - Gestión inventario
+  - [ ] `GET/POST /api/clientes` - Gestión clientes
+  - [ ] `GET/POST /api/categorias` - Gestión categorías
+  - [ ] `GET/POST /api/ventas` - Registro y consulta ventas
+- [ ] Validación y manejo de errores
+- [ ] Testing con Postman
+
+**Entregable:** API REST funcional, todos endpoints CRUD
+
+---
+
+### 🟡 FASE 4 - JUEVES (6 mayo)
+**Frontend + Integración + Deploy**
+
+- [ ] Interfaz HTML/CSS/JS:
+  - [ ] Login + Autenticación
+  - [ ] Dashboard principal
+  - [ ] Módulo de ventas (interfaz POS)
+  - [ ] Gestión de clientes
+  - [ ] Gestión de productos
+  - [ ] Reportes básicos
+- [ ] Conectar Frontend ↔ Backend
+- [ ] Testing E2E (flujo completo)
+- [ ] Deployment en Railway.app o Render.com
+- [ ] Documentación final
+
+**Entregable:** Aplicación completa, deployada en producción
+
+---
+
+## 10. Arquitectura Técnica
+
+### 📐 Stack Tecnológico
+
+| Capa | Tecnología | Versión | Propósito |
+|-----|-----------|---------|----------|
+| **BD** | PostgreSQL | 12+ | Motor relacional, triggers, vistas |
+| **Backend** | Python + Flask | 3.9+ / 2.3+ | API REST |
+| **ORM** | SQLAlchemy | 3.0+ | Mapeo objeto-relacional |
+| **Autenticación** | JWT | Flask-JWT-Extended 4.4+ | Tokens seguros |
+| **Seguridad** | bcrypt | 4.0+ | Hash de contraseñas |
+| **Validación** | Marshmallow | 3.19+ | Serialización + DTOs |
+| **Frontend** | HTML/CSS/JS | ES6+ | Interfaz usuario |
+| **Deploy** | Railway/Render | - | Hosting gratuito |
+
+---
+
+### 🏗️ Estructura Backend (Arquitectura Limpia)
+
+```
+backend/
+├── sql/
+│   ├── schema.sql                 # DDL - Tablas, índices, triggers, vistas
+│   ├── migrations/                # (Futuro) Versionado de cambios
+│   └── seeds/                     # (Mañana) Datos iniciales
+│
+├── app/
+│   ├── domain/                    # ENTITIES & VALUE OBJECTS
+│   │   ├── models.py              # Modelos SQLAlchemy
+│   │   ├── usuario.py             # Entidad Usuario
+│   │   ├── producto.py            # Entidad Producto
+│   │   └── venta.py               # Entidad Venta
+│   │
+│   ├── application/               # USE CASES & SERVICES
+│   │   ├── services/
+│   │   │   ├── auth_service.py    # Autenticación
+│   │   │   ├── producto_service.py
+│   │   │   ├── venta_service.py   # Lógica de ventas
+│   │   │   └── cliente_service.py
+│   │   ├── dto/                   # Data Transfer Objects
+│   │   │   ├── usuario_dto.py
+│   │   │   ├── venta_dto.py
+│   │   │   └── producto_dto.py
+│   │   └── exceptions.py          # Excepciones de negocio
+│   │
+│   ├── infrastructure/            # FRAMEWORKS & DRIVERS
+│   │   ├── database/
+│   │   │   ├── connection.py      # Pool conexiones PostgreSQL
+│   │   │   ├── repositories/      # Acceso a datos
+│   │   │   │   ├── usuario_repo.py
+│   │   │   │   ├── producto_repo.py
+│   │   │   │   └── venta_repo.py
+│   │   │   └── migrations/        # Alembic (futuro)
+│   │   ├── config/
+│   │   │   ├── settings.py        # Configuración general
+│   │   │   ├── database_config.py # Conexión BD
+│   │   │   └── jwt_config.py      # JWT settings
+│   │   └── external/              # APIs externas (futuro)
+│   │
+│   └── presentation/              # API REST
+│       ├── routes/
+│       │   ├── auth_routes.py     # POST /api/auth/login
+│       │   ├── producto_routes.py # GET/POST /api/productos
+│       │   ├── venta_routes.py    # GET/POST /api/ventas
+│       │   └── cliente_routes.py  # GET/POST /api/clientes
+│       └── middleware/
+│           ├── auth_middleware.py # Validar JWT
+│           ├── error_handler.py   # Manejo excepciones
+│           └── cors_middleware.py # CORS
+│
+├── tests/                         # Pruebas unitarias e integración
+├── main.py                        # Punto de entrada Flask
+├── requirements.txt               # Dependencias pip
+├── .env.example                   # Variables de entorno
+├── .gitignore                     # Ignorar archivos sensibles
+└── README.md                      # Documentación backend
+```
+
+---
+
+### 🗄️ Modelo de Datos (7 Tablas)
+
+```sql
+-- Autenticación
+ROLES (id_rol, nombre)
+USUARIOS (id_usuario, usuario, email, contraseña_hash, id_rol)
+
+-- Maestros
+CATEGORIAS (id_categoria, nombre)
+PRODUCTOS (id_producto, nombre, sku, precio_costo, precio_venta, stock_actual, id_categoria)
+CLIENTES (id_cliente, nombre, email, telefono, cedula_ruc, total_compras)
+
+-- Transacciones
+VENTAS (id_venta, numero_factura, id_cliente, id_usuario, fecha_venta, subtotal, impuesto, total, metodo_pago)
+DETALLE_VENTAS (id_detalle, id_venta, id_producto, cantidad, precio_unitario, subtotal_item)
+```
+
+**Características:**
+- Foreign keys en todas las relaciones
+- Índices en búsquedas frecuentes (cliente, producto, fecha)
+- Triggers automáticos (actualiza stock, suma totales)
+- Vistas para reportes (v_ventas_detalladas, v_productos_stock_critico, v_productos_desempeno)
+
+---
+
+### 🔐 Seguridad Implementada
+
+| Aspecto | Implementación |
+|--------|----------------|
+| **Autenticación** | JWT (tokens con expiración) |
+| **Contraseñas** | bcrypt + salt (12 rounds) |
+| **Integridad BD** | Foreign keys + constraints |
+| **Validación** | Marshmallow schemas + type hints |
+| **CORS** | Configurado para desarrollo y producción |
+| **Variables sensibles** | .env (no se versionan en git) |
+| **Rate limiting** | A implementar en miércoles |
+| **Roles** | admin, vendedor, gerente (modelo en tabla) |
+
+---
+
+### 📦 Dependencias Python
+
+```
+Flask==2.3.2              # Web framework
+Flask-SQLAlchemy==3.0.5   # ORM
+Flask-Cors==4.0.0         # CORS support
+Flask-JWT-Extended==4.4.4 # JWT authentication
+psycopg2-binary==2.9.6    # PostgreSQL driver
+python-dotenv==1.0.0      # Environment variables
+bcrypt==4.0.1             # Password hashing
+marshmallow==3.19.0       # Data validation
+marshmallow-sqlalchemy==0.29.0  # ORM serialization
+```
+
+---
+
+### 🚀 Plan de Deployment (Gratuito)
+
+**Opción Recomendada: Railway.app**
+
+1. **Base de Datos:** PostgreSQL en Railway (gratuito, 5GB)
+2. **Backend:** Python/Flask en Railway (gratuito, 512MB RAM)
+3. **Frontend:** Servido desde mismo servidor Rails o GitHub Pages
+4. **Dominio:** Subdominio gratuito de Railway (.up.railway.app)
+
+**Alternativas:**
+- Render.com (similar, también gratuito)
+- Heroku (de pago, pero escalable)
+
+**Proceso:**
+```bash
+# 1. Conectar repo a Railway
+# 2. Railway automáticamente:
+#    - Detecta requirements.txt
+#    - Instala dependencias
+#    - Crea PostgreSQL
+#    - Deploya Flask
+# 3. Resultado: API en https://minisuper-prod.up.railway.app
+```
+
+---
+
 ## 9. Referencias
 betofleitass. (s. f.). *django_point_of_sale* [Código fuente]. GitHub.
 https://github.com/betofleitass/django_point_of_sale
@@ -141,7 +412,22 @@ https://github.com/betofleitass/django_point_of_sale
 ---
 
 ## 10. Conclusión
-La propuesta de sistema de ventas para minimarket es académicamente pertinente, técnicamente viable y metodológicamente coherente con los resultados de aprendizaje de Base de Datos II. El proyecto delimita su alcance para priorizar la calidad del diseño relacional, la integridad de la información y la capacidad de análisis mediante SQL. En síntesis, el documento establece una base sólida para avanzar hacia la construcción del diagrama entidad-relación, la implementación DDL en PostgreSQL y la validación funcional mediante consultas.
+La propuesta de sistema de ventas para minimarket es académicamente pertinente, técnicamente viable y metodológicamente coherente con los resultados de aprendizaje de Base de Datos II.
+
+**✨ ACTUALIZACIÓN (3 mayo 2026):** El proyecto ha avanzado significativamente completando la **FASE 1 (25% del total)**:
+
+- ✅ **Schema SQL completo** con 7 tablas, integridad referencial, índices, vistas y triggers automáticos
+- ✅ **Arquitectura Limpia** estructurada en capas (domain, application, infrastructure, presentation)
+- ✅ **Stack técnico** definido (Python 3.9+, Flask 2.3+, SQLAlchemy, JWT, bcrypt, PostgreSQL 12+)
+- ✅ **Documentación backend** con guía de instalación, variables de entorno y estructura completa
+
+**Cronograma 4 días:**
+- ✅ (HOY) SQL + Estructura → COMPLETADO
+- ⏳ (Mañana) Poblado de datos
+- ⏳ (Miércoles) API REST + Endpoints CRUD
+- ⏳ (Jueves) Frontend + Deploy
+
+El proyecto mantiene un alcance controlado para priorizar calidad del diseño relacional, integridad de información, seguridad robusta (bcrypt + JWT), y capacidad de análisis mediante SQL. Se establece una base sólida para validación funcional mediante consultas, implementación de endpoints CRUD y posterior integración con frontend.
 
 ---
 
