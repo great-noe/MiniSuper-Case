@@ -67,3 +67,13 @@ htmlcov/
 .DS_Store
 *.pem
 *.key
+
+# uv (dependency manager)
+uv.lock
+.venv/
+
+# Internal testing files (NO subir a GitHub)
+api_test.py
+TEST_REPORT.txt
+POSTMAN_INSTRUCCIONES.txt
+Postman_Collection_MiniSuper.json

@@ -1,15 +1,9 @@
--- ==========================================
--- SCHEMA: MiniSuper-Case POS System
--- Base de Datos para Sistema de Ventas
--- Adaptado con buenas practicas inspiradas en dvdrental
--- DB: PostgreSQL 12+
--- ==========================================
+-- MiniSuper POS System - Database Schema
+-- PostgreSQL 12+
 
 BEGIN;
 
--- ==========================================
--- 1. TABLAS DE AUTENTICACION Y AUTORIZACION
--- ==========================================
+-- Tablas de Autenticación
 
 CREATE TABLE IF NOT EXISTS public.roles
 (
@@ -40,9 +34,7 @@ CREATE TABLE IF NOT EXISTS public.usuarios
     CONSTRAINT ck_usuarios_estado CHECK (estado IN ('activo', 'inactivo'))
 );
 
--- ==========================================
--- 2. TABLAS MAESTRAS
--- ==========================================
+-- Tablas Maestras
 
 CREATE TABLE IF NOT EXISTS public.categorias
 (
@@ -89,21 +81,19 @@ CREATE TABLE IF NOT EXISTS public.clientes
     telefono character varying(20),
     direccion text,
     ciudad character varying(100),
-    cedula_ruc character varying(20),
+    ci_nit character varying(20),
     estado character varying(20) DEFAULT 'activo'::character varying,
     fecha_registro timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
     fecha_ultima_compra timestamp without time zone,
     total_compras numeric(12, 2) DEFAULT 0.00,
     fecha_actualizacion timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT clientes_pkey PRIMARY KEY (id_cliente),
-    CONSTRAINT clientes_cedula_ruc_key UNIQUE (cedula_ruc),
+    CONSTRAINT clientes_ci_nit_key UNIQUE (ci_nit),
     CONSTRAINT ck_clientes_estado CHECK (estado IN ('activo', 'inactivo')),
     CONSTRAINT ck_clientes_total_compras CHECK (total_compras >= 0)
 );
 
--- ==========================================
--- 3. TABLAS DE TRANSACCIONES
--- ==========================================
+-- Tablas de Transacciones
 
 CREATE TABLE IF NOT EXISTS public.ventas
 (
@@ -160,9 +150,7 @@ CREATE TABLE IF NOT EXISTS public.detalle_ventas
     )
 );
 
--- ==========================================
--- 4. LLAVES FORANEAS
--- ==========================================
+-- Llaves Foráneas
 
 ALTER TABLE IF EXISTS public.usuarios
     DROP CONSTRAINT IF EXISTS fk_usuarios_rol;
@@ -212,9 +200,7 @@ ALTER TABLE IF EXISTS public.detalle_ventas
     ON UPDATE NO ACTION
     ON DELETE RESTRICT;
 
--- ==========================================
--- 5. INDICES
--- ==========================================
+-- Índices
 
 CREATE INDEX IF NOT EXISTS idx_usuarios_rol
     ON public.usuarios(id_rol);
@@ -258,9 +244,7 @@ CREATE INDEX IF NOT EXISTS idx_detalle_venta
 CREATE INDEX IF NOT EXISTS idx_detalle_producto
     ON public.detalle_ventas(id_producto);
 
--- ==========================================
--- 6. VISTAS
--- ==========================================
+-- Vistas
 
 CREATE OR REPLACE VIEW public.v_ventas_detalladas AS
 SELECT
@@ -324,9 +308,7 @@ WHERE p.estado = 'activo'
 GROUP BY p.id_producto, p.nombre, p.estado
 ORDER BY ingresos_totales DESC, p.nombre;
 
--- ==========================================
--- 7. FUNCIONES Y TRIGGERS
--- ==========================================
+-- Funciones y Triggers
 
 CREATE OR REPLACE FUNCTION public.set_fecha_actualizacion()
 RETURNS trigger AS $$
@@ -473,7 +455,3 @@ FOR EACH ROW
 EXECUTE FUNCTION public.actualizar_stock_producto();
 
 COMMIT;
-
--- ==========================================
--- FIN DEL SCHEMA
--- ==========================================

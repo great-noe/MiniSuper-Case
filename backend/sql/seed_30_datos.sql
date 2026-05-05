@@ -1,25 +1,15 @@
--- ==========================================
--- SEED: datos de ejemplo para MiniSuper
--- Compatible con el esquema generado en pgAdmin
--- Nota: la tabla roles se carga con 2 registros
---       por requerimiento: Administrador y Vendedor.
---       El resto de tablas se carga con 30 registros.
--- ==========================================
+-- Seed Data - MiniSuper Database
 
 BEGIN;
 
--- ==========================================
--- 1. ROLES
--- ==========================================
+-- Roles
 INSERT INTO public.roles (nombre, descripcion, fecha_creacion, fecha_actualizacion)
 VALUES
     ('Administrador', 'Acceso completo al sistema', TIMESTAMP '2026-01-01 08:00:00', TIMESTAMP '2026-01-01 08:00:00'),
     ('Vendedor', 'Gestion de ventas y atencion al cliente', TIMESTAMP '2026-01-01 08:10:00', TIMESTAMP '2026-01-01 08:10:00')
 ON CONFLICT (nombre) DO NOTHING;
 
--- ==========================================
--- 2. USUARIOS
--- ==========================================
+-- Usuarios
 WITH datos_usuarios (
     usuario,
     email,
@@ -86,9 +76,7 @@ JOIN public.roles r
     ON r.nombre = du.rol_nombre
 ON CONFLICT (usuario) DO NOTHING;
 
--- ==========================================
--- 3. CATEGORIAS
--- ==========================================
+-- Categorías
 INSERT INTO public.categorias (nombre, descripcion, estado, fecha_creacion, fecha_actualizacion)
 VALUES
     ('Abarrotes', 'Productos basicos de despensa', 'activo', TIMESTAMP '2026-01-05 08:00:00', TIMESTAMP '2026-01-05 08:00:00'),
@@ -123,9 +111,7 @@ VALUES
     ('Tecnologia Basica', 'Accesorios de uso cotidiano', 'activo', TIMESTAMP '2026-01-05 12:50:00', TIMESTAMP '2026-01-05 12:50:00')
 ON CONFLICT (nombre) DO NOTHING;
 
--- ==========================================
--- 4. PRODUCTOS
--- ==========================================
+-- Productos
 WITH datos_productos (
     nombre,
     descripcion,
@@ -200,9 +186,7 @@ JOIN public.categorias c
     ON c.nombre = dp.categoria_nombre
 ON CONFLICT (sku) DO NOTHING;
 
--- ==========================================
--- 5. CLIENTES
--- ==========================================
+-- Clientes
 INSERT INTO public.clientes (
     nombre,
     apellido,
@@ -210,7 +194,7 @@ INSERT INTO public.clientes (
     telefono,
     direccion,
     ciudad,
-    cedula_ruc,
+    ci_nit,
     estado,
     fecha_registro,
     fecha_ultima_compra,
@@ -248,11 +232,9 @@ VALUES
     ('Paola', 'Cortez', 'paola.cortez@correo.test', '70010028', 'Calle Aroma 410', 'La Paz', 'CI00000028', 'activo', TIMESTAMP '2026-01-15 12:30:00', NULL, 0.00, TIMESTAMP '2026-01-15 12:30:00'),
     ('Nicolas', 'Choque', 'nicolas.choque@correo.test', '70010029', 'Zona Villa 29', 'El Alto', 'CI00000029', 'activo', TIMESTAMP '2026-01-15 12:40:00', NULL, 0.00, TIMESTAMP '2026-01-15 12:40:00'),
     ('Andrea', 'Mora', 'andrea.mora@correo.test', '70010030', 'Av. 6 de Marzo 132', 'El Alto', 'CI00000030', 'activo', TIMESTAMP '2026-01-15 12:50:00', NULL, 0.00, TIMESTAMP '2026-01-15 12:50:00')
-ON CONFLICT (cedula_ruc) DO NOTHING;
+ON CONFLICT (ci_nit) DO NOTHING;
 
--- ==========================================
--- 6. VENTAS
--- ==========================================
+-- Ventas
 WITH base_ventas AS (
     SELECT
         gs,
@@ -275,7 +257,7 @@ WITH base_ventas AS (
         END AS metodo_pago
     FROM generate_series(1, 30) AS gs
     JOIN public.clientes c
-        ON c.cedula_ruc = 'CI' || LPAD(gs::text, 8, '0')
+        ON c.ci_nit = 'CI' || LPAD(gs::text, 8, '0')
     JOIN public.usuarios u
         ON u.usuario = (
             ARRAY[
@@ -389,9 +371,7 @@ WHERE NOT EXISTS (
       AND dv.id_producto = p.id_producto
 );
 
--- ==========================================
--- 8. AJUSTE DE CLIENTES SEGUN VENTAS
--- ==========================================
+-- Actualizar resumen de clientes
 UPDATE public.clientes c
 SET
     total_compras = resumen.total_compras,
@@ -407,7 +387,3 @@ FROM (
 WHERE c.id_cliente = resumen.id_cliente;
 
 COMMIT;
-
--- ==========================================
--- FIN DEL SEED
--- ==========================================
