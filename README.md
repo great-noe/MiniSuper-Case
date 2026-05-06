@@ -3,39 +3,40 @@
 
 ---
 
-## 📊 Estado del Proyecto - Actualización 3 mayo 2026
+## 📊 Estado del Proyecto
 
 | Componente | Status | Progreso |
 |-----------|--------|----------|
 | **SQL Schema** | ✅ COMPLETO | 100% |
 | **Backend Estructura** | ✅ COMPLETO | 100% |
 | **Configuración (requirements.txt, .env)** | ✅ COMPLETO | 100% |
-| **Backend API** | ⏳ En progreso | 0% |
-| **Poblado de Datos** | ⏳ Programado | 0% |
-| **Frontend** | ⏳ A negociar | 0% |
-| **Deployment** | ⏳ Programado | 0% |
-| **TOTAL PROYECTO** | 📈 **25% Avance** | **1 de 4 días** |
+| **Backend API - Conexión PostgreSQL** | ✅ COMPLETO | 100% |
+| **Poblado de Datos** | ✅ COMPLETO | 100% |
+| **Endpoints CRUD** | ✅ GET y PUT | 50% |
+| **Frontend** | ⏳ Siguiente fase | 0% |
+| **Deployment** | ⏳ Siguiente fase | 0% |
+| **TOTAL PROYECTO** | 📈 **50% Avance** | **Fases 1-2 completadas** |
 
-### ✨ Cambios Realizados Hoy
+### ✨ Hito Actual Completado: API Real + Datos Poblados
 
-- ✅ **backend/sql/schema.sql** (8.6 KB)
-  - 7 tablas principales (usuarios, roles, clientes, categorías, productos, ventas, detalle_ventas)
-  - Integridad referencial completa (foreign keys)
-  - 10 índices para optimización de búsquedas
-  - 3 vistas analíticas (ventas detalladas, stock crítico, desempeño)
-  - 2 triggers automáticos (actualización de stock y totales de cliente)
-  - Constraints de validación de datos
+**Backend API funcional:**
+- ✅ Eliminación de datos mock - API conectada a PostgreSQL real
+- ✅ Endpoints GET: `/api/productos`, `/api/categorias`, `/api/clientes`, `/api/ventas`
+- ✅ Endpoint PUT: `/api/productos/<id>` para actualizar precios
+- ✅ Formato de precios: 2 decimales fijos (11.94, 8.92, 7.25, etc.)
+- ✅ Respuestas JSON con estructura uniforme (count, data, success)
 
-- ✅ **Arquitectura Limpia Implementada**
-  - `backend/app/domain/` → Modelos de dominio (entidades)
-  - `backend/app/application/` → Lógica de casos de uso (servicios)
-  - `backend/app/infrastructure/` → Implementación técnica (BD, config)
-  - `backend/app/presentation/` → API REST (rutas, middleware)
+**Base de datos:**
+- ✅ 10 productos con precios variados en 2 decimales
+- ✅ Precios almacenados como `numeric(10,2)` en PostgreSQL
+- ✅ Validación de costos (precio_costo < precio_venta)
+- ✅ Stock inicial para operaciones
 
-- ✅ **Configuración Backend**
-  - `requirements.txt` con 9 dependencias: Flask, SQLAlchemy, JWT, bcrypt, marshmallow
-  - `.env.example` con variables de entorno
-  - `backend/README.md` con guía de instalación paso a paso
+**Cambios realizados:**
+- ✅ Renamed: `app_simple.py` → `aplicacion.py` (nomenclatura formal)
+- ✅ Updated: Schema con corrección `cedula_ruc` → `ci_nit`
+- ✅ Updated: Seed data con precios y costos consistentes
+- ✅ Updated: .gitignore para excluir api_test.py y archivos de prueba
 
 ---
 
@@ -174,7 +175,7 @@ La estructura propuesta separa catálogos, transacciones y detalle transaccional
 
 ## 9. Cronograma de Implementación
 
-### 🟢 FASE 1 - HOY (3 mayo) ✅ COMPLETA
+### 🟢 FASE 1 - Backend SQL + Estructura ✅ COMPLETA
 **Backend SQL + Estructura**
 
 - ✅ Diseño schema.sql con 7 tablas
@@ -187,44 +188,47 @@ La estructura propuesta separa catálogos, transacciones y detalle transaccional
 
 ---
 
-### 🟡 FASE 2 - MAÑANA (4 mayo)
-**Poblado de Datos + Validación**
+### 🟢 FASE 2 - Poblado de Datos + API Real ✅ COMPLETA
+**Poblado de Datos + Validación + Conexión PostgreSQL Real**
 
-- [ ] Instalar PostgreSQL local
-- [ ] Crear BD: `createdb minisuper_db`
-- [ ] Ejecutar schema.sql
-- [ ] Crear `seeds.sql` con datos iniciales:
-  - [ ] 3-5 usuarios (admin, vendedor, gerente)
-  - [ ] 10 categorías de productos
-  - [ ] 30 productos de ejemplo
-  - [ ] 5-10 clientes de prueba
-- [ ] Validar integridad con consultas
-- [ ] Ejecutar triggers y verificar automatismos
+- ✅ Instalar PostgreSQL local
+- ✅ Crear BD: `minisuper`
+- ✅ Ejecutar schema.sql
+- ✅ Crear seed_30_datos.sql con:
+  - ✅ 3 usuarios (admin, vendedor, gerente)
+  - ✅ 10 categorías de productos
+  - ✅ 10 productos con precios en 2 decimales
+  - ✅ 10 clientes de prueba
+- ✅ Validar integridad con consultas
+- ✅ Ejecutar triggers y verificar automatismos
+- ✅ Reemplazar API mock con conexión PostgreSQL real
+- ✅ Implementar endpoints GET CRUD
+- ✅ Implementar endpoint PUT para actualizar precios
 
-**Entregable:** BD poblada, validada, lista para API
+**Entregable:** BD poblada, API REST conectada a PostgreSQL, datos validados
 
 ---
 
-### 🟡 FASE 3 - MIÉRCOLES (5 mayo)
-**Backend API + Endpoints CRUD**
+### 🟡 FASE 3 - Endpoints POST/DELETE + Validación Avanzada
+**Backend API - Funcionalidad Completa**
 
-- [ ] Crear `main.py` (entrada Flask)
-- [ ] Configurar SQLAlchemy + conexión BD
-- [ ] Implementar autenticación JWT
-- [ ] Endpoints CRUD:
-  - [ ] `POST /api/auth/login` - Iniciar sesión
-  - [ ] `GET/POST /api/productos` - Gestión inventario
-  - [ ] `GET/POST /api/clientes` - Gestión clientes
-  - [ ] `GET/POST /api/categorias` - Gestión categorías
-  - [ ] `GET/POST /api/ventas` - Registro y consulta ventas
+- [ ] Endpoints POST:
+  - [ ] `POST /api/productos` - Crear producto
+  - [ ] `POST /api/clientes` - Crear cliente
+  - [ ] `POST /api/categorias` - Crear categoría
+  - [ ] `POST /api/ventas` - Crear venta con detalle
+- [ ] Endpoints DELETE (lógicos):
+  - [ ] `DELETE /api/productos/<id>` - Marcar inactivo
+  - [ ] `DELETE /api/clientes/<id>` - Marcar inactivo
 - [ ] Validación y manejo de errores
 - [ ] Testing con Postman
+- [ ] Documentación de endpoints (README técnico)
 
-**Entregable:** API REST funcional, todos endpoints CRUD
+**Entregable:** API REST CRUD completa, validada, documentada
 
 ---
 
-### 🟡 FASE 4 - JUEVES (6 mayo)
+### 🟡 FASE 4 - Frontend + Integración + Deploy
 **Frontend + Integración + Deploy**
 
 - [ ] Interfaz HTML/CSS/JS:
@@ -240,8 +244,6 @@ La estructura propuesta separa catálogos, transacciones y detalle transaccional
 - [ ] Documentación final
 
 **Entregable:** Aplicación completa, deployada en producción
-
----
 
 ## 10. Arquitectura Técnica
 
