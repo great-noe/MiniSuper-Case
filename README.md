@@ -14,7 +14,7 @@
 | **Docente** | Ing. Limber Maldonado Castillo |
 | **Período** | Mayo de 2026 |
 | **Estudiantes** | Noel David Limachi Abelo<br>Zubieta Mendoza Owen Jonathan |
-| **Tecnologías** | PostgreSQL 12+, Python 3.9+ (Flask), HTML/CSS/JavaScript |
+| **Tecnologías** | PostgreSQL 12+, Python 3.9+ (Flask) |
 
 ---
 
