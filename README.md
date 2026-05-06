@@ -1,23 +1,20 @@
-# Propuesta académica de proyecto
-## Base de Datos II: Sistema de ventas (POS minimarket)
+# Sistema de Gestión de Ventas - MiniSuper POS
+## Base de Datos II: Proyecto Académico
 
 ---
 
-**📌 Nota:** Para consultar el estado actual del proyecto y el progreso de cada fase, ver archivo `PROGRESO.md`
+## Contenido
 
----
-
-## Índice
 1. Introducción
 2. Objetivo del proyecto
 3. Justificación académica y técnica
 4. Análisis del repositorio de referencia
-5. Delimitación del alcance del proyecto
+5. Delimitación del alcance
 6. Requerimientos del sistema
 7. Reglas de negocio
-8. Propuesta de modelo de datos
-9. Cronograma de Implementación (NUEVO)
-10. Arquitectura Técnica (NUEVO)
+8. Modelo de datos
+9. Cronograma de implementación
+10. Arquitectura técnica
 11. Referencias
 12. Conclusión
 13. Anexos
@@ -25,388 +22,286 @@
 ---
 
 ## 1. Introducción
-El presente documento desarrolla una propuesta formal para la asignatura Base de Datos II, orientada al diseño de un sistema de ventas para minimarket. La finalidad principal es estructurar una base de datos relacional que permita representar con precisión los procesos básicos de una operación comercial de mostrador. La propuesta se construye con base en evidencia técnica obtenida de un proyecto de referencia en GitHub, el cual sirve como punto de partida para definir componentes funcionales, entidades de datos y límites de implementación (betofleitass, s. f.).
 
-Desde una perspectiva académica, el proyecto permite aplicar de manera integrada los contenidos centrales del curso: levantamiento de requerimientos, definición de reglas de negocio, modelado entidad-relación, normalización, traducción al modelo relacional y elaboración de consultas SQL para análisis operativo. En consecuencia, se plantea un alcance controlado que garantice profundidad conceptual y viabilidad de entrega.
+El presente documento describe el diseño e implementación de un sistema de gestión de ventas para comercios de pequeña escala (minimarket). El sistema implementa una base de datos relacional en PostgreSQL que permite registrar transacciones de venta, mantener inventario, gestionar clientes y generar reportes operativos.
+
+El proyecto responde a los objetivos de aprendizaje del curso Base de Datos II, aplicando conceptos de modelado entidad-relación, normalización, integridad referencial y consultas SQL.
 
 ---
 
 ## 2. Objetivo del proyecto
-Diseñar e implementar una base de datos relacional para un sistema de ventas de pequeña escala, capaz de registrar clientes, productos, categorías, transacciones de venta y detalle de venta, manteniendo consistencia e integridad de la información.
 
-### Objetivos específicos:
-1. Identificar y documentar requerimientos funcionales y no funcionales del sistema.
-2. Definir un conjunto claro de reglas de negocio que guíen la estructura de datos.
-3. Elaborar un modelo conceptual y relacional normalizado hasta tercera forma normal.
-4. Implementar la estructura lógica en PostgreSQL mediante sentencias DDL.
-5. Construir consultas SQL que validen operaciones y generen información útil para toma de decisiones básicas.
+Diseñar e implementar una base de datos relacional funcional para un sistema de punto de venta (POS) que permita:
+
+- Registrar y gestionar clientes
+- Administrar inventario de productos y categorías
+- Procesar transacciones de venta con múltiples ítems
+- Calcular montos y generar facturas
+- Consultar historial de operaciones
+
+### Objetivos específicos
+
+1. Diseñar un modelo entidad-relación normalizado hasta tercera forma normal (3FN)
+2. Implementar la estructura lógica mediante DDL en PostgreSQL
+3. Establecer integridad referencial y validación de datos mediante constraints
+4. Automatizar operaciones mediante triggers
+5. Proporcionar una interfaz API REST para acceso a datos
+6. Documentar el sistema y permitir su extensión
 
 ---
 
 ## 3. Justificación académica y técnica
-El tema POS minimarket se considera pertinente por tres razones. Primero, representa un caso real de alta frecuencia en el entorno local y, por ello, facilita la comprensión de procesos de negocio concretos. Segundo, incorpora relaciones de uno a muchos y dependencias funcionales suficientes para demostrar competencias de modelado, normalización y consultas multitabla. Tercero, su complejidad es intermedia: no es trivial, pero tampoco excede la capacidad de implementación dentro del plazo académico.
 
-En términos metodológicos, el proyecto favorece la trazabilidad entre problema, diseño de datos y validación por consultas. Esto permite que la solución no se limite a una estructura de tablas, sino que evidencie coherencia entre requerimientos, integridad referencial y resultados esperados del sistema.
+El tema de un sistema POS para minimarket es pertinente porque:
+
+1. Representa un caso de uso real frecuente en el entorno comercial local
+2. Incorpora relaciones complejas (uno a muchos, muchos a muchos) que demuestran competencias de modelado
+3. Requiere normalización cuidadosa para evitar redundancia
+4. Permite implementación en plazo académico sin excedera complejidad excesiva
+
+Desde la perspectiva técnica, el proyecto integra:
+
+- Modelado conceptual y relacional
+- Definición de restricciones de integridad
+- Automatización mediante triggers y vistas
+- Consultas SQL para análisis
+- Arquitectura de capas (API REST)
 
 ---
 
 ## 4. Análisis del repositorio de referencia
-**Repositorio analizado:**
-https://github.com/betofleitass/django_point_of_sale
 
-El repositorio presenta una arquitectura modular que resulta útil como base conceptual para el proyecto. Se identifican, de forma principal, los siguientes componentes:
+Se analizó el repositorio: https://github.com/betofleitass/django_point_of_sale
 
-1. **Clientes (Customer):** almacenamiento de datos personales y de contacto.
-2. **Productos y categorías (Product, Category):** clasificación comercial y precio.
-3. **Ventas y detalle (Sale, SaleDetail):** registro de cabecera de transacción y desglose por ítems.
-4. **Autenticación de usuarios:** control de acceso para la operación del sistema.
+Componentes identificados:
 
-El valor académico del repositorio radica en que ya organiza los procesos nucleares de una venta, permitiendo adaptar su lógica a un diseño de base de datos delimitado, sin necesidad de replicar módulos no esenciales para esta fase.
+1. **Gestión de clientes**: Registro de datos personales y de contacto
+2. **Gestión de productos**: Catálogo con categorías y precios
+3. **Gestión de ventas**: Registro de transacciones con desglose de ítems
+4. **Control de acceso**: Autenticación de usuarios por rol
+
+El repositorio sirvió como referencia conceptual para definir las entidades y relaciones del modelo.
 
 ---
 
-## 5. Delimitación del alcance del proyecto
-La delimitación responde al criterio de lograr una implementación sólida en un plazo corto, priorizando calidad de modelado sobre amplitud funcional.
+## 5. Delimitación del alcance
 
-### 5.1 Alcance incluido
-1. Gestión de categorías de producto.
-2. Gestión de productos con estado activo/inactivo.
-3. Gestión de clientes.
-4. Registro de ventas y detalle de ventas con múltiples ítems.
-5. Cálculo de subtotal, impuesto, total, pago y cambio.
-6. Consultas de análisis básico (ventas por fecha, clientes con mayor frecuencia de compra y productos más vendidos).
+### Incluido
 
-### 5.2 Alcance excluido
-1. Manejo de múltiples sucursales y transferencias de inventario.
-2. Módulo de compras a proveedores.
-3. Devoluciones, anulaciones y notas de crédito.
-4. Facturación electrónica e integraciones tributarias.
-5. Despliegue en producción y arquitectura de alta disponibilidad.
-6. Control avanzado de seguridad y auditoría completa.
+1. Gestión de categorías de producto
+2. Gestión de productos (alta, baja, modificación, consulta)
+3. Gestión de clientes
+4. Registro de ventas con múltiples ítems
+5. Cálculo automático de totales e impuestos
+6. Control de inventario
+7. Consultas de análisis básico por fecha, cliente y producto
 
-Esta delimitación evita la sobrecarga funcional y mantiene el proyecto enfocado en los aprendizajes evaluables en Base de Datos II.
+### Excluido
+
+1. Múltiples sucursales
+2. Compras a proveedores
+3. Devoluciones y notas de crédito
+4. Facturación electrónica
+5. Despliegue en alta disponibilidad
+6. Auditoría completa
 
 ---
 
 ## 6. Requerimientos del sistema
 
-### 6.1 Requerimientos funcionales
-1. El sistema debe permitir registrar, editar y consultar clientes.
-2. El sistema debe permitir registrar categorías y productos.
-3. El sistema debe permitir generar una venta con uno o varios productos.
-4. El sistema debe calcular automáticamente los montos de la transacción.
-5. El sistema debe permitir consultar historial de ventas por cliente y por período.
+### Requerimientos funcionales
 
-### 6.2 Requerimientos no funcionales
-1. La base de datos se implementará en PostgreSQL.
-2. Se aplicarán claves primarias, foráneas y restricciones de integridad.
-3. El modelo se normalizará hasta tercera forma normal (3FN).
-4. La nomenclatura de objetos de base de datos será consistente y mantenible.
-5. Las consultas de validación deberán ser reproducibles en pgAdmin.
+1. El sistema debe permitir crear, actualizar y consultar clientes
+2. El sistema debe permitir crear, actualizar y consultar productos y categorías
+3. El sistema debe permitir registrar ventas con uno o más ítems
+4. El sistema debe calcular automáticamente subtotales, impuestos y totales
+5. El sistema debe permitir consultar historial de ventas por cliente y período
+6. El sistema debe mantener registro de cambios en precios y costos
+
+### Requerimientos no funcionales
+
+1. Base de datos: PostgreSQL 12 o superior
+2. Modelo normalizado hasta 3FN
+3. Integridad referencial mediante foreign keys
+4. Validación de datos mediante constraints
+5. Automatización mediante triggers
+6. Consultas reproducibles y documentadas
+7. API REST para acceso programático
 
 ---
 
 ## 7. Reglas de negocio
-1. Toda venta debe tener al menos un detalle asociado.
-2. Cada detalle de venta debe estar vinculado a un producto existente.
-3. El total de una venta será la suma de subtotales de detalle más impuesto.
-4. El monto pagado debe ser mayor o igual al total para calcular cambio.
-5. Los productos inactivos no pueden participar en nuevas ventas.
-6. La eliminación de categorías o productos con transacciones históricas no se realizará de forma física, sino lógica.
 
-Estas reglas son fundamentales para conservar coherencia histórica y evitar inconsistencias en reportes.
-
----
-
-## 8. Propuesta de modelo de datos
-
-### 8.1 Entidades principales
-1. usuario
-2. cliente
-3. categoria
-4. producto
-5. venta
-6. detalle_venta
-
-### 8.2 Relaciones principales
-1. categoria (1) a (N) producto
-2. cliente (1) a (N) venta
-3. usuario (1) a (N) venta
-4. venta (1) a (N) detalle_venta
-5. producto (1) a (N) detalle_venta
-
-### 8.3 Criterio de normalización
-La estructura propuesta separa catálogos, transacciones y detalle transaccional para evitar redundancia. El precio de venta por ítem se conserva en `detalle_venta` para mantener trazabilidad histórica ante cambios de precio en `producto`. Este criterio asegura consistencia analítica y respalda consultas comparativas por período.
+1. Toda venta requiere al menos un detalle de ítem
+2. Cada ítem debe estar vinculado a un producto existente
+3. El total de venta es la suma de ítems más impuesto
+4. Los productos inactivos no pueden participar en nuevas ventas
+5. La eliminación de datos es lógica (marcado como inactivo), no física
+6. Los precios se registran con precisión de dos decimales
+7. Los montos se expresan en Bolivianos (Bs)
+8. El costo de un producto debe ser menor que su precio de venta
 
 ---
 
-## 9. Cronograma de Implementación
+## 8. Modelo de datos
 
-### 🟢 FASE 1 - Backend SQL + Estructura ✅ COMPLETA
-**Backend SQL + Estructura**
+### Entidades principales
 
-- ✅ Diseño schema.sql con 7 tablas
-- ✅ Estructura carpetas (Arquitectura Limpia)
-- ✅ Dependencias Python (requirements.txt)
-- ✅ Configuración inicial (.env.example)
-- ✅ Documentación backend
+| Entidad | Descripción |
+|---------|------------|
+| roles | Roles de acceso (admin, vendedor, gerente) |
+| usuarios | Cuentas de usuario del sistema |
+| categorias | Categorías de productos |
+| productos | Catálogo de productos con precios |
+| clientes | Base de clientes |
+| ventas | Cabecera de transacciones |
+| detalle_ventas | Ítems de cada transacción |
 
-**Entregable:** `backend/` con SQL completo, estructura lista para desarrollo
+### Relaciones principales
 
----
+- categorias (1) a muchos (N) productos
+- clientes (1) a N ventas
+- usuarios (1) a N ventas
+- ventas (1) a N detalle_ventas
+- productos (1) a N detalle_ventas
 
-### 🟢 FASE 2 - Poblado de Datos + API Real ✅ COMPLETA
-**Poblado de Datos + Validación + Conexión PostgreSQL Real**
+### Criterio de normalización
 
-- ✅ Instalar PostgreSQL local
-- ✅ Crear BD: `minisuper`
-- ✅ Ejecutar schema.sql
-- ✅ Crear seed_30_datos.sql con:
-  - ✅ 3 usuarios (admin, vendedor, gerente)
-  - ✅ 10 categorías de productos
-  - ✅ 10 productos con precios en 2 decimales
-  - ✅ 10 clientes de prueba
-- ✅ Validar integridad con consultas
-- ✅ Ejecutar triggers y verificar automatismos
-- ✅ Reemplazar API mock con conexión PostgreSQL real
-- ✅ Implementar endpoints GET CRUD
-- ✅ Implementar endpoint PUT para actualizar precios
-
-**Entregable:** BD poblada, API REST conectada a PostgreSQL, datos validados
+La estructura implementa tercera forma normal (3FN) para eliminar redundancia. El precio de venta se almacena en detalle_ventas para mantener trazabilidad histórica ante cambios de precio.
 
 ---
 
-### 🟡 FASE 3 - Endpoints POST/DELETE + Validación Avanzada
-**Backend API - Funcionalidad Completa**
+## 9. Cronograma de implementación
 
-- [ ] Endpoints POST:
-  - [ ] `POST /api/productos` - Crear producto
-  - [ ] `POST /api/clientes` - Crear cliente
-  - [ ] `POST /api/categorias` - Crear categoría
-  - [ ] `POST /api/ventas` - Crear venta con detalle
-- [ ] Endpoints DELETE (lógicos):
-  - [ ] `DELETE /api/productos/<id>` - Marcar inactivo
-  - [ ] `DELETE /api/clientes/<id>` - Marcar inactivo
-- [ ] Validación y manejo de errores
-- [ ] Testing con Postman
-- [ ] Documentación de endpoints (README técnico)
+### Fase 1: Backend SQL y estructura
 
-**Entregable:** API REST CRUD completa, validada, documentada
+Completado. Incluye:
 
----
+- Schema SQL con 7 tablas
+- Índices para optimización
+- Vistas analíticas
+- Triggers automáticos
+- Estructura de carpetas
 
-### 🟡 FASE 4 - Frontend + Integración + Deploy
-**Frontend + Integración + Deploy**
+### Fase 2: Población de datos y API REST
 
-- [ ] Interfaz HTML/CSS/JS:
-  - [ ] Login + Autenticación
-  - [ ] Dashboard principal
-  - [ ] Módulo de ventas (interfaz POS)
-  - [ ] Gestión de clientes
-  - [ ] Gestión de productos
-  - [ ] Reportes básicos
-- [ ] Conectar Frontend ↔ Backend
-- [ ] Testing E2E (flujo completo)
-- [ ] Deployment en Railway.app o Render.com
-- [ ] Documentación final
+Completado. Incluye:
 
-**Entregable:** Aplicación completa, deployada en producción
+- Base de datos poblada
+- 10 productos, 10 clientes, 10 categorías
+- API conectada a PostgreSQL
+- Endpoints GET y PUT funcionales
+- Formato de precios consistente (2 decimales)
 
-## 10. Arquitectura Técnica
+### Fase 3: Endpoints CRUD completo
 
-### 📐 Stack Tecnológico
+Pendiente. Incluirá:
 
-| Capa | Tecnología | Versión | Propósito |
-|-----|-----------|---------|----------|
-| **BD** | PostgreSQL | 12+ | Motor relacional, triggers, vistas |
-| **Backend** | Python + Flask | 3.9+ / 2.3+ | API REST |
-| **ORM** | SQLAlchemy | 3.0+ | Mapeo objeto-relacional |
-| **Autenticación** | JWT | Flask-JWT-Extended 4.4+ | Tokens seguros |
-| **Seguridad** | bcrypt | 4.0+ | Hash de contraseñas |
-| **Validación** | Marshmallow | 3.19+ | Serialización + DTOs |
-| **Frontend** | HTML/CSS/JS | ES6+ | Interfaz usuario |
-| **Deploy** | Railway/Render | - | Hosting gratuito |
+- Endpoints POST (crear registros)
+- Endpoints DELETE (eliminación lógica)
+- Validación avanzada
+- Manejo de errores
+
+### Fase 4: Frontend e integración
+
+Pendiente. Incluirá:
+
+- Interfaz HTML/CSS/JavaScript
+- Integración con API
+- Módulo de ventas
+- Reportes básicos
+- Deployment en producción
 
 ---
 
-### 🏗️ Estructura Backend (Arquitectura Limpia)
+## 10. Arquitectura técnica
+
+### Stack tecnológico
+
+| Componente | Tecnología | Versión |
+|-----------|-----------|---------|
+| Base de datos | PostgreSQL | 12+ |
+| Backend | Python + Flask | 3.9+ / 2.3+ |
+| ORM | SQLAlchemy | 3.0+ |
+| Frontend | HTML/CSS/JavaScript | ES6+ |
+
+### Estructura de carpetas
 
 ```
 backend/
 ├── sql/
-│   ├── schema.sql                 # DDL - Tablas, índices, triggers, vistas
-│   ├── migrations/                # (Futuro) Versionado de cambios
-│   └── seeds/                     # (Mañana) Datos iniciales
+│   ├── schema.sql           # DDL - Tablas, índices, triggers
+│   └── seed_30_datos.sql    # DML - Datos iniciales
 │
-├── app/
-│   ├── domain/                    # ENTITIES & VALUE OBJECTS
-│   │   ├── models.py              # Modelos SQLAlchemy
-│   │   ├── usuario.py             # Entidad Usuario
-│   │   ├── producto.py            # Entidad Producto
-│   │   └── venta.py               # Entidad Venta
-│   │
-│   ├── application/               # USE CASES & SERVICES
-│   │   ├── services/
-│   │   │   ├── auth_service.py    # Autenticación
-│   │   │   ├── producto_service.py
-│   │   │   ├── venta_service.py   # Lógica de ventas
-│   │   │   └── cliente_service.py
-│   │   ├── dto/                   # Data Transfer Objects
-│   │   │   ├── usuario_dto.py
-│   │   │   ├── venta_dto.py
-│   │   │   └── producto_dto.py
-│   │   └── exceptions.py          # Excepciones de negocio
-│   │
-│   ├── infrastructure/            # FRAMEWORKS & DRIVERS
-│   │   ├── database/
-│   │   │   ├── connection.py      # Pool conexiones PostgreSQL
-│   │   │   ├── repositories/      # Acceso a datos
-│   │   │   │   ├── usuario_repo.py
-│   │   │   │   ├── producto_repo.py
-│   │   │   │   └── venta_repo.py
-│   │   │   └── migrations/        # Alembic (futuro)
-│   │   ├── config/
-│   │   │   ├── settings.py        # Configuración general
-│   │   │   ├── database_config.py # Conexión BD
-│   │   │   └── jwt_config.py      # JWT settings
-│   │   └── external/              # APIs externas (futuro)
-│   │
-│   └── presentation/              # API REST
-│       ├── routes/
-│       │   ├── auth_routes.py     # POST /api/auth/login
-│       │   ├── producto_routes.py # GET/POST /api/productos
-│       │   ├── venta_routes.py    # GET/POST /api/ventas
-│       │   └── cliente_routes.py  # GET/POST /api/clientes
-│       └── middleware/
-│           ├── auth_middleware.py # Validar JWT
-│           ├── error_handler.py   # Manejo excepciones
-│           └── cors_middleware.py # CORS
-│
-├── tests/                         # Pruebas unitarias e integración
-├── main.py                        # Punto de entrada Flask
-├── requirements.txt               # Dependencias pip
-├── .env.example                   # Variables de entorno
-├── .gitignore                     # Ignorar archivos sensibles
-└── README.md                      # Documentación backend
+├── aplicacion.py            # API Flask
+├── requirements.txt         # Dependencias
+├── .env                      # Variables de entorno
+├── .env.example             # Plantilla de variables
+├── .gitignore               # Control de versionado
+└── README.md                # Documentación backend
 ```
 
----
+### Especificación de base de datos
 
-### 🗄️ Modelo de Datos (7 Tablas)
+- Tablas: 7 (roles, usuarios, categorias, productos, clientes, ventas, detalle_ventas)
+- Índices: 10 (optimización de búsquedas frecuentes)
+- Vistas: 3 (análisis de ventas, stock crítico, desempeño)
+- Triggers: 2 (actualización automática de fechas)
+
+### Tipos de datos
 
 ```sql
--- Autenticación
-ROLES (id_rol, nombre)
-USUARIOS (id_usuario, usuario, email, contraseña_hash, id_rol)
+-- Identificadores
+id_* : INTEGER SERIAL
 
--- Maestros
-CATEGORIAS (id_categoria, nombre)
-PRODUCTOS (id_producto, nombre, sku, precio_costo, precio_venta, stock_actual, id_categoria)
-CLIENTES (id_cliente, nombre, email, telefono, cedula_ruc, total_compras)
+-- Moneda (Bolivianos)
+precio_costo : numeric(10,2)
+precio_venta : numeric(10,2)
+total : numeric(10,2)
 
--- Transacciones
-VENTAS (id_venta, numero_factura, id_cliente, id_usuario, fecha_venta, subtotal, impuesto, total, metodo_pago)
-DETALLE_VENTAS (id_detalle, id_venta, id_producto, cantidad, precio_unitario, subtotal_item)
-```
+-- Documento
+ci_nit : VARCHAR(20) UNIQUE
 
-**Características:**
-- Foreign keys en todas las relaciones
-- Índices en búsquedas frecuentes (cliente, producto, fecha)
-- Triggers automáticos (actualiza stock, suma totales)
-- Vistas para reportes (v_ventas_detalladas, v_productos_stock_critico, v_productos_desempeno)
-
----
-
-### 🔐 Seguridad Implementada
-
-| Aspecto | Implementación |
-|--------|----------------|
-| **Autenticación** | JWT (tokens con expiración) |
-| **Contraseñas** | bcrypt + salt (12 rounds) |
-| **Integridad BD** | Foreign keys + constraints |
-| **Validación** | Marshmallow schemas + type hints |
-| **CORS** | Configurado para desarrollo y producción |
-| **Variables sensibles** | .env (no se versionan en git) |
-| **Rate limiting** | A implementar en miércoles |
-| **Roles** | admin, vendedor, gerente (modelo en tabla) |
-
----
-
-### 📦 Dependencias Python
-
-```
-Flask==2.3.2              # Web framework
-Flask-SQLAlchemy==3.0.5   # ORM
-Flask-Cors==4.0.0         # CORS support
-Flask-JWT-Extended==4.4.4 # JWT authentication
-psycopg2-binary==2.9.6    # PostgreSQL driver
-python-dotenv==1.0.0      # Environment variables
-bcrypt==4.0.1             # Password hashing
-marshmallow==3.19.0       # Data validation
-marshmallow-sqlalchemy==0.29.0  # ORM serialization
+-- Estados
+estado : VARCHAR(20) CHECK ('activo' o 'inactivo')
 ```
 
 ---
 
-### 🚀 Plan de Deployment (Gratuito)
+## 11. Referencias
 
-**Opción Recomendada: Railway.app**
+betofleitass. (s.f.). django_point_of_sale. GitHub. https://github.com/betofleitass/django_point_of_sale
 
-1. **Base de Datos:** PostgreSQL en Railway (gratuito, 5GB)
-2. **Backend:** Python/Flask en Railway (gratuito, 512MB RAM)
-3. **Frontend:** Servido desde mismo servidor Rails o GitHub Pages
-4. **Dominio:** Subdominio gratuito de Railway (.up.railway.app)
+PostgreSQL Global Development Group. (2024). PostgreSQL Documentation. https://www.postgresql.org/docs/
 
-**Alternativas:**
-- Render.com (similar, también gratuito)
-- Heroku (de pago, pero escalable)
-
-**Proceso:**
-```bash
-# 1. Conectar repo a Railway
-# 2. Railway automáticamente:
-#    - Detecta requirements.txt
-#    - Instala dependencias
-#    - Crea PostgreSQL
-#    - Deploya Flask
-# 3. Resultado: API en https://minisuper-prod.up.railway.app
-```
+Sommerville, I. (2016). Software Engineering (10th ed.). Pearson Education.
 
 ---
 
-## 9. Referencias
-betofleitass. (s. f.). *django_point_of_sale* [Código fuente]. GitHub.
-https://github.com/betofleitass/django_point_of_sale
+## 12. Conclusión
+
+El sistema MiniSuper POS implementa los conceptos fundamentales de diseño de bases de datos relacionales. La estructura normalizada, el uso de integridad referencial y la automatización mediante triggers demuestran aplicación de principios académicos en un contexto funcional.
+
+El proyecto está actualmente en fase 2 de implementación, con la base de datos operacional y la API REST en funcionamiento. Las fases subsecuentes se enfocarán en completar la funcionalidad CRUD y desarrollar la interfaz de usuario.
 
 ---
 
-## 10. Conclusión
-La propuesta de sistema de ventas para minimarket es académicamente pertinente, técnicamente viable y metodológicamente coherente con los resultados de aprendizaje de Base de Datos II.
+## 13. Anexos
 
-**✨ ACTUALIZACIÓN (3 mayo 2026):** El proyecto ha avanzado significativamente completando la **FASE 1 (25% del total)**:
+### 13.1 Diagrama Entidad-Relación
 
-- ✅ **Schema SQL completo** con 7 tablas, integridad referencial, índices, vistas y triggers automáticos
-- ✅ **Arquitectura Limpia** estructurada en capas (domain, application, infrastructure, presentation)
-- ✅ **Stack técnico** definido (Python 3.9+, Flask 2.3+, SQLAlchemy, JWT, bcrypt, PostgreSQL 12+)
-- ✅ **Documentación backend** con guía de instalación, variables de entorno y estructura completa
-
-**Cronograma 4 días:**
-- ✅ (HOY) SQL + Estructura → COMPLETADO
-- ⏳ (Mañana) Poblado de datos
-- ⏳ (Miércoles) API REST + Endpoints CRUD
-- ⏳ (Jueves) Frontend + Deploy
-
-El proyecto mantiene un alcance controlado para priorizar calidad del diseño relacional, integridad de información, seguridad robusta (bcrypt + JWT), y capacidad de análisis mediante SQL. Se establece una base sólida para validación funcional mediante consultas, implementación de endpoints CRUD y posterior integración con frontend.
-
----
-
-## 11. Anexos
-
-### 11.1 Diagrama E-R
 ![Diagrama E-R](assets/imagenes/Diagrama%20E-R.png)
 
-### 11.2 Diagrama Entidad Relacion Mejorado (EER)
+### 13.2 Diagrama Entidad Relación Mejorado
+
 ![Diagrama Entidad Relacion Mejorado (EER)](assets/imagenes/Diagrama%20Entidad%20Relacion%20Mejorado%20%28EER%29.png)
 
-### 11.3 Esquema
+### 13.3 Esquema de Base de Datos
+
 ![Esquema](assets/imagenes/Esquema.jpeg)
+
+---
+
+**Autores:** great-noe, elunboundfiremail
+**Fecha:** 2026
+**Asignatura:** Base de Datos II
