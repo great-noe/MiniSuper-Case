@@ -3,40 +3,7 @@
 
 ---
 
-## 📊 Estado del Proyecto
-
-| Componente | Status | Progreso |
-|-----------|--------|----------|
-| **SQL Schema** | ✅ COMPLETO | 100% |
-| **Backend Estructura** | ✅ COMPLETO | 100% |
-| **Configuración (requirements.txt, .env)** | ✅ COMPLETO | 100% |
-| **Backend API - Conexión PostgreSQL** | ✅ COMPLETO | 100% |
-| **Poblado de Datos** | ✅ COMPLETO | 100% |
-| **Endpoints CRUD** | ✅ GET y PUT | 50% |
-| **Frontend** | ⏳ Siguiente fase | 0% |
-| **Deployment** | ⏳ Siguiente fase | 0% |
-| **TOTAL PROYECTO** | 📈 **50% Avance** | **Fases 1-2 completadas** |
-
-### ✨ Hito Actual Completado: API Real + Datos Poblados
-
-**Backend API funcional:**
-- ✅ Eliminación de datos mock - API conectada a PostgreSQL real
-- ✅ Endpoints GET: `/api/productos`, `/api/categorias`, `/api/clientes`, `/api/ventas`
-- ✅ Endpoint PUT: `/api/productos/<id>` para actualizar precios
-- ✅ Formato de precios: 2 decimales fijos (11.94, 8.92, 7.25, etc.)
-- ✅ Respuestas JSON con estructura uniforme (count, data, success)
-
-**Base de datos:**
-- ✅ 10 productos con precios variados en 2 decimales
-- ✅ Precios almacenados como `numeric(10,2)` en PostgreSQL
-- ✅ Validación de costos (precio_costo < precio_venta)
-- ✅ Stock inicial para operaciones
-
-**Cambios realizados:**
-- ✅ Renamed: `app_simple.py` → `aplicacion.py` (nomenclatura formal)
-- ✅ Updated: Schema con corrección `cedula_ruc` → `ci_nit`
-- ✅ Updated: Seed data con precios y costos consistentes
-- ✅ Updated: .gitignore para excluir api_test.py y archivos de prueba
+**📌 Nota:** Para consultar el estado actual del proyecto y el progreso de cada fase, ver archivo `PROGRESO.md`
 
 ---
 
